@@ -3,7 +3,7 @@ import './App.css';
 import Title from './components/Title'
 import Form from './components/Form'
 import Weather from './components/Weather'
-import { API_KEY } from './apikey'
+import { API_KEY } from './key/apikey'
 
 class App extends Component {
   state = {
