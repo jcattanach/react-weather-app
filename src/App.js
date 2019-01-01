@@ -22,8 +22,13 @@ class App extends Component {
     const API_CALL = await fetch(`http://api.openweathermap.org/data/2.5/weather?q=${CITY},${COUNTRY}&mode=json&appid=${API_KEY}&units=imperial`)
 
     const DATA = await API_CALL.json()
+    console.log(DATA)
 
-    if(CITY && COUNTRY){
+    if(DATA.message === "city not found"){
+      this.setState({
+        error : "City not found..."
+      })
+    } else if(CITY && COUNTRY){
       this.setState({
         temp : DATA.main.temp,
         city : DATA.name,
