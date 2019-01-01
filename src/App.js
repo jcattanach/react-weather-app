@@ -7,6 +7,15 @@ import Weather from './components/Weather'
 const API_KEY = '6a3a8d18d964a3a6e0ff630f04a23ae5'
 
 class App extends Component {
+  state = {
+    temp : undefined,
+    city : undefined,
+    country : undefined,
+    humidity : undefined,
+    description : undefined,
+    error : undefined
+  }
+
   getWeather = async (e) => {
     e.preventDefault()
     const CITY = e.target.elements.city.value
@@ -14,7 +23,21 @@ class App extends Component {
     const API_CALL = await fetch(`http://api.openweathermap.org/data/2.5/weather?q=${CITY},${COUNTRY}&mode=json&appid=${API_KEY}&units=imperial`)
 
     const DATA = await API_CALL.json()
-    console.log(DATA)
+
+    if(CITY && COUNTRY){
+      this.setState({
+        temp : DATA.main.temp,
+        city : DATA.name,
+        country : DATA.sys.country,
+        humidity : DATA.main.humidity,
+        description : DATA.weather[0].description,
+        error : ''
+      })
+    } else {
+      this.setState({
+        error : 'Please enter location...'
+      })
+    }
   }
 
   render() {
@@ -22,7 +45,14 @@ class App extends Component {
       <div className="App">
         <Title />
         <Form getWeather={this.getWeather}/>
-        <Weather />
+        <Weather
+          temp={this.state.temp}
+          city={this.state.city}
+          country={this.state.country}
+          humidity={this.state.humidity}
+          description={this.state.description}
+          error={this.state.error}
+          />
       </div>
     );
   }
